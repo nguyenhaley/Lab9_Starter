@@ -50,6 +50,15 @@
 </head>
 
 <body>
+
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "2101a3714c1f4f9c951c2ab39f05e601"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script> 
+
   <main>
     <form>
       <fieldset>
@@ -64,30 +73,30 @@
         <input name="second-num" id="second-num" />
         <button id="calculate">Calculate</button>
         <br />
-        <output></output>
+        <!-- <output></output> -->
       </fieldset>
     </form>
-
+    
     <section id="error-btns">
-      <button>Console Log</button>
-      <button>Console Error</button>
-      <button>Console Count</button>
-      <button>Console Warn</button>
-      <button>Console Assert</button>
-      <button>Console Clear</button>
-      <button>Console Dir</button>
-      <button>Console dirxml</button>
-      <button>Console Group Start</button>
-      <button>Console Group End</button>
-      <button>Console Table</button>
-      <button>Start Timer</button>
-      <button>End Timer</button>
-      <button>Console Trace</button>
-      <button>Trigger a Global Error</button>
+      <button id="log">Console Log</button> 
+      <button id="error">Console Error</button>
+      <button id="count">Console Count</button>
+      <button id="warn">Console Warn</button>
+      <button id="assert">Console Assert</button>
+      <button id="clear">Console Clear</button>
+      <button id="dir">Console Dir</button>
+      <button id="dirxml">Console dirxml</button>
+      <button id="group-start">Console Group Start</button>
+      <button id="group-end">Console Group End</button>
+      <button id="table">Console Table</button>
+      <button id="start-time">Start Timer</button>
+      <button id="end-time">End Timer</button>
+      <button id="trace">Console Trace</button>
+      <button id="global">Trigger a Global Error</button>
     </section>
   </main>
 
-  <script>
+  <script>        
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -102,6 +111,148 @@
 
     // Start your code here
     // You may move this JS to another file if you wish
+    
+    ////////////// ADDING BUTTONS TO CONSOLE TESTING /////////////////
+
+    // console log button
+    document.querySelector('#log').addEventListener('click', () => {
+      console.log("You have pressed the Console Log button :)");
+    });
+
+    // console error button
+    document.querySelector('#error').addEventListener('click', () => {
+      console.error("An error was found :( ");
+    });
+
+    // console count button
+    document.querySelector('#count').addEventListener('click', () => {
+      console.count('Number of times you pressed this button: ');
+    });
+
+    // console warn button
+    document.querySelector('#warn').addEventListener('click', () => {
+      console.warn('Be careful, you are being warned!');
+    });
+
+    // console assert button
+    let x = 6;
+    let y = 7;
+    let reason = 'The product should be greater than 50!';
+    document.querySelector('#assert').addEventListener('click', () => {
+      console.assert((x*y) > 50, reason);
+    });
+
+    // console clear button
+    document.querySelector('#clear').addEventListener('click', () => {
+      console.clear();
+    });
+
+    // console dir button
+    document.querySelector('#dir').addEventListener('click', () => {
+      console.dir(document.querySelector('#dir'));
+    });
+
+    // console dirxml button
+    document.querySelector('#dirxml').addEventListener('click', () => {
+      console.dirxml(document.querySelector('#error-btns'));
+    });
+
+    // console group start button
+    document.querySelector('#group-start').addEventListener('click', () => {
+      console.group('Everything you grouped together: ');
+    });
+
+    // console group end button
+    document.querySelector('#group-end').addEventListener('click', () => {
+      console.groupEnd();
+    });
+
+    // console table button
+    let tableContent = [
+      {
+        name: 'Haley',
+        favColor: 'light purple',
+      },
+      {
+        name: 'David',
+        favColor: 'green',
+      },
+      {
+        name: 'Lucy',
+        favColor: 'periwinkle',
+      }
+    ];
+    document.querySelector('#table').addEventListener('click', () => {
+      console.table(tableContent);
+    });
+
+    // console start timer button
+    document.querySelector('#start-time').addEventListener('click', () => {
+      console.time('Timer button: ');
+    });
+
+    // console end timer button
+    document.querySelector('#end-time').addEventListener('click', () => {
+      console.timeEnd('Timer button: ');
+    });
+
+    // console trace button
+    function level_1(){
+      function level_2(){
+        function level_3(){
+          console.trace();
+        }
+        level_3();
+      }
+      level_2();
+    }
+
+    document.querySelector('#trace').addEventListener('click', () => {
+      level_1();
+    });
+
+    // console trigger global error button
+    document.querySelector('#global').addEventListener('click', () => {
+      alert('Good code :)');
+      badCode('Not good code :(');
+      console.log(badCode);
+    });
+
+    ////////////// TRYING TRY/CATCH ///////////////////// TRYING THROW AND CUSTOM ERRORS /////////////////
+
+    class CustomError extends Error{
+      constructor(message){
+        super(message);
+        this.name = "CustomError";
+      }
+    }
+
+    document.querySelector("#calculate").addEventListener('click', () => {
+      try{
+        let output = document.querySelector('output');
+        if(output == null){
+          throw new CustomError("Come on, no output field...?");
+        }
+        else{
+          document.querySelector('#button').addEventListener('click', () => {
+            console.log(output.innerHTML);
+          });
+        }
+
+      }catch (error){
+        if(error instanceof CustomError){
+          alert("Error message: " + error.message);
+        }
+        else{
+          throw error;
+        }
+
+      }finally{
+        console.log("This is a demo of the finally block");
+      }
+    });
+
+
   </script>
 </body>
 
